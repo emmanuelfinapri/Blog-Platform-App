@@ -23,6 +23,12 @@ const postSchema = new mongoose.Schema(
       required: true,
       enum: ["Technology", "Health", "Lifestyle", "Education", "Business"],
     },
+    postCreator: {
+      type: String,
+    },
+    likes: {
+      type: [String],
+    },
   },
   { timestamps: true }
 );

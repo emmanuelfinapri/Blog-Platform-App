@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 // routes
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
+const postRoute = require("./routes/post");
 
 mongoose
   .connect(process.env.MONGO_URL)
@@ -23,6 +24,7 @@ app.use(express.json());
 // use routers
 app.use(authRoute);
 app.use(userRoute);
+app.use(postRoute);
 
 app.listen(PORT, () => {
   console.log(`Blog App running on Port: ${PORT}`);
