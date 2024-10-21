@@ -40,13 +40,12 @@ const loginVerify = (req, res, next) => {
 };
 
 const adminAndSuperAdminVerify = (req, res, next) => {
-  const { role } = req.user;
+  const { role, username } = req.user;
 
   // Check if the user is an Admin or SuperAdmin
   if (role !== "Admin" && role !== "SuperAdmin") {
     return res.json({
-      message:
-        "you are not an Admin or Super Admin so you can't make changes to the products",
+      message: `Sorry ${username} you are not an Admin or Super Admin so you can't make changes`,
     });
   }
 
@@ -54,13 +53,12 @@ const adminAndSuperAdminVerify = (req, res, next) => {
 };
 
 const superAdminVerify = (req, res, next) => {
-  const { role } = req.user;
+  const { role, username } = req.user;
 
   // Check if the user is a SuperAdmin
   if (role !== "SuperAdmin") {
-    return res.json({
-      message:
-        "you are not a Super Admin so you don't have Super Admin privileges",
+    return res.status(400).json({
+      message: `Sorry ${username} you are not a Super Admin so you don't have Super Admin privileges`,
     });
   }
 

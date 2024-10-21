@@ -6,8 +6,9 @@ const {
   updatePost,
   deletePost,
   likePost,
+  deleteAllPosts,
 } = require("../controllers/post");
-const { loginVerify, logoutVerify } = require("../middlewares/verify");
+const { loginVerify, superAdminVerify } = require("../middlewares/verify");
 const routes = express.Router();
 
 // Route to create a new post
@@ -20,6 +21,13 @@ routes.get("/get-post-by-id", getSinglePost);
 routes.put("/update-post-by-id", loginVerify, updatePost);
 // Route to delete a single post by ID
 routes.delete("/delete-post-by-id", loginVerify, deletePost);
+// Route to delete all posts
+routes.delete(
+  "/delete-all-posts",
+  loginVerify,
+  superAdminVerify,
+  deleteAllPosts
+);
 // Route to like a single post by ID
 routes.post("/like-post-by-id", loginVerify, likePost);
 

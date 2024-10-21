@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { commentSchema } = require("../models/comment"); // You may not need this import here
 
 const postSchema = new mongoose.Schema(
   {
@@ -29,6 +30,20 @@ const postSchema = new mongoose.Schema(
     likes: {
       type: [String],
     },
+    comments: [
+      {
+        commentId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Comment", // Reference the Comment model
+        },
+        commentText: {
+          type: String,
+        },
+        commentor: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

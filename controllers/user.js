@@ -120,4 +120,24 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { updateUserInfo, updatePassword, deleteUser, forgotPassword };
+// Delete all users from the database
+const deleteAllUsers = async (req, res) => {
+  try {
+    await userModel.deleteMany({}); // Delete all users
+    res.clearCookie("user_token"); // Clear the authentication token (cookie)
+    res.status(200).json({
+      message: `You have successfully deleted every account in this application`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message }); // Handle server error
+  }
+};
+
+module.exports = {
+  updateUserInfo,
+  updatePassword,
+  deleteUser,
+  forgotPassword,
+  deleteAllUsers,
+};

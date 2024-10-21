@@ -27,6 +27,9 @@ const getAllPost = async (req, res) => {
     const allPost = await postModel
       .find()
       .select("title desc previewPics detailPics category postCreator");
+    if (!allPost) {
+      return res.status(400).json("No post exists in the Database");
+    }
     // Send a response with all posts
     res.status(200).json(allPost);
   } catch (error) {
@@ -43,6 +46,11 @@ const getSinglePost = async (req, res) => {
     const singlePost = await postModel
       .findById(id)
       .select("title desc previewPics detailPics category postCreator");
+    if (!singlePost) {
+      return res
+        .status(400)
+        .json("This post does not exist, try a different Post ID");
+    }
     // Send a response with the post
     res.status(200).json(singlePost);
   } catch (error) {
@@ -129,16 +137,16 @@ const likePost = async (req, res) => {
     if (!checkUserInArray) {
       // Add the user to the likes array if they haven't liked the post
       gottenLikes.push(username);
-      res
-        .status(200)
-        .json({ message: `Hey ${username} You have liked this post` });
+      res.status(200).json({
+        message: `Hey ${username} You have liked ${thePost.postCreator}'s post`,
+      });
     } else {
       // Remove the user from the likes array if they have already liked the post
       const getIndex = gottenLikes.indexOf(username);
       gottenLikes.splice(getIndex, 1);
-      res
-        .status(200)
-        .json({ message: `You have disliked this post ${username}` });
+      res.status(200).json({
+        message: `You have disliked ${thePost.postCreator}'s post, ${username}`,
+      });
     }
 
     // Update the likes in the database
@@ -154,6 +162,18 @@ const likePost = async (req, res) => {
   }
 };
 
+// Delete all users from the database
+const deleteAllPosts = async (req, res) => {
+  try {
+    await postModel.deleteMany({}); // Delete all users
+    res.status(200).json({
+      message: `You have successfully deleted every Post in this application`,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message }); // Handle server error
+  }
+};
+
 // Export all functions for use in other parts of the application
 module.exports = {
   makePost,
@@ -162,4 +182,5 @@ module.exports = {
   updatePost,
   deletePost,
   likePost,
+  deleteAllPosts,
 };

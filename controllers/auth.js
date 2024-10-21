@@ -1,3 +1,4 @@
+// Import necessary modules for user authentication and management
 const userModel = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -99,7 +100,7 @@ const logout = async (req, res) => {
     // Clear the user token from the cookies and send a success response
     res
       .clearCookie("user_token")
-      .status(201)
+      .status(200)
       .json({ message: `Logged out ${username} successfully` });
   } catch (error) {
     // Log the error and send a 500 status response if something goes wrong
